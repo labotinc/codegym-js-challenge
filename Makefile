@@ -1,3 +1,4 @@
+.SILENT:
 define bash-c
 	docker-compose exec --user docker app bash -c
 endef
@@ -12,6 +13,8 @@ endef
 
 up:
 	docker-compose up -d
+	sleep 10
+	./url.sh
 ps:
 	docker-compose ps
 down:
@@ -26,6 +29,8 @@ init:
 	$(bash-c) 'touch database/database.sqlite'
 	$(bash-c) 'chmod 777 -R storage bootstrap/cache database'
 	$(bash-c) 'php artisan migrate'
+	sleep 10
+	./url.sh
 sqlite:
 	$(bash-c) 'sqlite3 database/database.sqlite'
 
